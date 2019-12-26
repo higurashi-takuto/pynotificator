@@ -6,6 +6,16 @@ class NotificationError(Exception):
 
 
 class BaseNotification:
+    def set_typed_variable(self, value, specified_type):
+        if isinstance(value, specified_type):
+            return value
+        else:
+            raise NotificationError(
+                'can only set '
+                f'{specified_type.__name__} '
+                f'(not "{value.__class__.__name__}")'
+            )
+
     # Main
     def notify(self):
         raise NotImplementedError()
@@ -30,12 +40,7 @@ class WebhookNotification(BaseNotification):
         return self._message
 
     def set_message(self, message):
-        if isinstance(message, str):
-            self._message = message
-        else:
-            raise NotificationError(
-                f'message can only set str (not \"{type(message)}\")'
-            )
+        self._message = self.set_typed_variable(message, str)
 
     message = property(get_message, set_message)
 
@@ -44,12 +49,7 @@ class WebhookNotification(BaseNotification):
         return self._url
 
     def set_url(self, url):
-        if isinstance(url, str):
-            self._url = url
-        else:
-            raise NotificationError(
-                f'url can only set str (not \"{type(url)}\")'
-            )
+        self._url = self.set_typed_variable(url, str)
 
     url = property(get_url, set_url)
 
@@ -70,12 +70,7 @@ class BeepNotification(BaseNotification):
         return self._times
 
     def set_times(self, times):
-        if isinstance(times, int):
-            self._times = times
-        else:
-            raise NotificationError(
-                f'times can only set int (not \"{type(times)}\")'
-            )
+        self._times = self.set_typed_variable(times, int)
 
     times = property(get_times, set_times)
 
@@ -113,12 +108,7 @@ class CenterNotification(BaseNotification):
         return self._message
 
     def set_message(self, message):
-        if isinstance(message, str):
-            self._message = message
-        else:
-            raise NotificationError(
-                f'message can only set str (not \"{type(message)}\")'
-            )
+        self._message = self.set_typed_variable(message, str)
 
     message = property(get_message, set_message)
 
@@ -127,13 +117,9 @@ class CenterNotification(BaseNotification):
         return self._title
 
     def set_title(self, title):
-        if isinstance(title, str):
-            self._title = title
-        else:
-            raise NotificationError(
-                f'title can only set str (not \"{type(title)}\")'
-            )
-        # タイトルとサブタイトルの両方がないといけないため、片方だけ設定された場合、もう一方を空白にする
+        self._title = self.set_typed_variable(title, str)
+        # タイトルとサブタイトルの両方がないといけないため、
+        # 片方だけ設定された場合、もう一方を空白にする
         if not self._subtitle:
             self._subtitle = ' '
 
@@ -144,13 +130,9 @@ class CenterNotification(BaseNotification):
         return self._subtitle
 
     def set_subtitle(self, subtitle):
-        if isinstance(subtitle, str):
-            self._subtitle = subtitle
-        else:
-            raise NotificationError(
-                f'subtitle can only set str (not \"{type(subtitle)}\")'
-            )
-        # タイトルとサブタイトルの両方がないといけないため、片方だけ設定された場合、もう一方を空白にする
+        self._subtitle = self.set_typed_variable(subtitle, str)
+        # タイトルとサブタイトルの両方がないといけないため、
+        # 片方だけ設定された場合、もう一方を空白にする
         if not self._title:
             self._title = ' '
 
@@ -161,12 +143,7 @@ class CenterNotification(BaseNotification):
         return self._sound
 
     def set_sound(self, sound):
-        if isinstance(sound, bool):
-            self._sound = sound
-        else:
-            raise NotificationError(
-                f'sound can only set bool (not \"{type(sound)}\")'
-            )
+        self._sound = self.set_typed_variable(sound, bool)
 
     sound = property(get_sound, set_sound)
 
@@ -237,12 +214,7 @@ class LineNotification(BaseNotification):
         return self._message
 
     def set_message(self, message):
-        if isinstance(message, str):
-            self._message = message
-        else:
-            raise NotificationError(
-                f'message can only set str (not \"{type(message)}\")'
-            )
+        self._message = self.set_typed_variable(message, str)
 
     message = property(get_message, set_message)
 
@@ -251,12 +223,7 @@ class LineNotification(BaseNotification):
         return self._token
 
     def set_token(self, token):
-        if isinstance(token, str):
-            self._token = token
-        else:
-            raise NotificationError(
-                f'token can only set str (not \"{type(token)}\")'
-            )
+        self._token = self.set_typed_variable(token, str)
 
     token = property(get_token, set_token)
 
