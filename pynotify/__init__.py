@@ -21,19 +21,16 @@ class BaseNotification:
         raise NotImplementedError()
 
 
-class WebhookNotification(BaseNotification):
+class MessageNotification(BaseNotification):
     '''
-    WebhookNotification:
-        Webhook による通知
+    MessageNotification:
+        メッセージを打ち込める通知
     引数:
         message(str): 本文
-        url(str): Webhook の URL
     '''
-    def __init__(self, message, url):
+    def __init__(self, message):
         self._message = None
-        self._url = None
         self.set_message(message)
-        self.set_url(url)
 
     # message のプロパティ用
     def get_message(self):
@@ -44,6 +41,20 @@ class WebhookNotification(BaseNotification):
 
     message = property(get_message, set_message)
 
+
+class WebhookNotification(MessageNotification):
+    '''
+    WebhookNotification:
+        Webhook による通知
+    引数:
+        message(str): 本文
+        url(str): Webhook の URL
+    '''
+    def __init__(self, message, url):
+        super().__init__(message)
+        self._url = None
+        self.set_url(url)
+
     # url のプロパティ用
     def get_url(self):
         return self._url
@@ -52,6 +63,29 @@ class WebhookNotification(BaseNotification):
         self._url = self.set_typed_variable(url, str)
 
     url = property(get_url, set_url)
+
+
+class TokenNotification(MessageNotification):
+    '''
+    TokenNotification:
+        Token による通知
+    引数:
+        message(str): 本文
+        token(str): トークン
+    '''
+    def __init__(self, message, token):
+        super().__init__(message)
+        self._token = None
+        self.set_token(token)
+
+    # token のプロパティ用
+    def get_token(self):
+        return self._token
+
+    def set_token(self, token):
+        self._token = self.set_typed_variable(token, str)
+
+    token = property(get_token, set_token)
 
 
 class BeepNotification(BaseNotification):
@@ -80,7 +114,7 @@ class BeepNotification(BaseNotification):
         subprocess.run(cmd)
 
 
-class CenterNotification(BaseNotification):
+class CenterNotification(MessageNotification):
     '''
     CenterNotification:
         (macOS 用)通知センターによる通知
@@ -91,26 +125,16 @@ class CenterNotification(BaseNotification):
         sound(bool): 音の有無
     '''
     def __init__(self, message, title=None, subtitle=None, sound=True):
-        self._message = None
+        super().__init__(message)
         self._title = None
         self._subtitle = None
         self._sound = None
-        self.set_message(message)
         if title:
             self.set_title(title)
         if subtitle:
             self.set_subtitle(subtitle)
         if sound:
             self.set_sound(sound)
-
-    # message のプロパティ用
-    def get_message(self):
-        return self._message
-
-    def set_message(self, message):
-        self._message = self.set_typed_variable(message, str)
-
-    message = property(get_message, set_message)
 
     # title のプロパティ用
     def get_title(self):
@@ -194,7 +218,7 @@ class DiscordNotification(WebhookNotification):
         )
 
 
-class LineNotification(BaseNotification):
+class LineNotification(TokenNotification):
     '''
     LineNotification:
         Line による通知
@@ -203,29 +227,8 @@ class LineNotification(BaseNotification):
         token(str): LINE Notify のトークン
     '''
     def __init__(self, message, token):
+        super().__init__(message, token)
         self.URL = 'https://notify-api.line.me/api/notify'
-        self._message = None
-        self._token = None
-        self.set_message(message)
-        self.set_token(token)
-
-    # message のプロパティ用
-    def get_message(self):
-        return self._message
-
-    def set_message(self, message):
-        self._message = self.set_typed_variable(message, str)
-
-    message = property(get_message, set_message)
-
-    # token のプロパティ用
-    def get_token(self):
-        return self._token
-
-    def set_token(self, token):
-        self._token = self.set_typed_variable(token, str)
-
-    token = property(get_token, set_token)
 
     # 通知の実行
     def notify(self):
