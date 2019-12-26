@@ -78,6 +78,9 @@ ln = LineNotification('本文', 'xxx')
 ln.notify()
 ```
 
+## クラス図
+![クラス図](assets/classes.png)
+
 ## ライセンス
 [MIT License](LICENSE)
 
