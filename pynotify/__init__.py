@@ -110,7 +110,7 @@ class BeepNotification(BaseNotification):
 
     # 通知の実行
     def notify(self):
-        cmd = ['osascript', '-e', f'beep {self.times}']
+        cmd = ['osascript', '-e', f'beep {self._times}']
         subprocess.run(cmd)
 
 
