@@ -18,7 +18,7 @@ PyNotify は Python のプログラムから macOS のビープ音・通知セ�
 このリポジトリを以下のコマンドでインストールします。動作環境は `Python >= 3.6` です。
 
 ```console
-pip install git+https://github.com/higurashi-takuto/pynotify.git
+pip install git+https://github.com/higurashi-takuto/pynotify.git@v0.1.2
 ```
 
 ## 使い方
