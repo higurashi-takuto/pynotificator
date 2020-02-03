@@ -21,6 +21,39 @@ class BaseNotification:
         raise NotImplementedError()
 
 
+class OSSpecificNotification(BaseNotification):
+    '''
+    OSSpecificNotification:
+        OS ごとの通知
+    '''
+    def __init__(self):
+        import platform
+        self.system = platform.system()
+
+    # macOS 用の通知
+    def darwin_notify(self):
+        raise NotImplementedError()
+
+    # Linux 用の通知
+    def linux_notify(self):
+        raise NotImplementedError()
+
+    # Windows 用の通知
+    def windows_notify(self):
+        raise NotImplementedError()
+
+    # 通知の実行
+    def notify(self):
+        if self.system == 'Darwin':
+            self.darwin_notify()
+        elif self.system == 'Linux':
+            self.linux_notify()
+        elif self.system == 'Windows':
+            self.windows_notify()
+        else:
+            NotificationError(f'{self.system} is supported system')
+
+
 class MessageNotification(BaseNotification):
     '''
     MessageNotification:
@@ -88,7 +121,7 @@ class TokenNotification(MessageNotification):
     token = property(get_token, set_token)
 
 
-class BeepNotification(BaseNotification):
+class BeepNotification(OSSpecificNotification):
     '''
     BeepNotification:
         (macOS 用)ビープ音による通知
@@ -96,6 +129,7 @@ class BeepNotification(BaseNotification):
         times(int): ビープ音の回数
     '''
     def __init__(self, times):
+        super().__init__()
         self._times = None
         self.set_times(times)
 
@@ -109,7 +143,7 @@ class BeepNotification(BaseNotification):
     times = property(get_times, set_times)
 
     # 通知の実行
-    def notify(self):
+    def darwin_notify(self):
         cmd = ['osascript', '-e', f'beep {self._times}']
         subprocess.run(cmd)
 
