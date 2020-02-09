@@ -147,6 +147,9 @@ class BeepNotification(OSSpecificNotification):
         cmd = ['osascript', '-e', f'beep {self._times}']
         subprocess.run(cmd)
 
+    def linux_notify(self):
+        cmd = [f"bash -c 'for i in `seq {self._times}`; do xkbbell && sleep 0.5; done'"]
+        subprocess.run(cmd, shell=True)
 
 class CenterNotification(MessageNotification):
     '''
