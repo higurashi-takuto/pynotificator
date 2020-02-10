@@ -124,7 +124,7 @@ class TokenNotification(MessageNotification):
 class BeepNotification(OSSpecificNotification):
     '''
     BeepNotification:
-        (macOS 用)ビープ音による通知
+        ビープ音による通知
     引数:
         times(int): ビープ音の回数
     '''
@@ -147,11 +147,18 @@ class BeepNotification(OSSpecificNotification):
         cmd = ['osascript', '-e', f'beep {self._times}']
         subprocess.run(cmd)
 
+    def linux_notify(self):
+        import time
+        for _ in range(self._times):
+            cmd = ['xkbbell']
+            time.sleep(0.5)
+            subprocess.run(cmd)
+
 
 class CenterNotification(MessageNotification):
     '''
     CenterNotification:
-        (macOS 用)通知センターによる通知
+        通知センターによる通知
     引数:
         message(str): 本文
         title(str): タイトル

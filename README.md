@@ -12,7 +12,7 @@
 
 <h4>それ、できます。<br>そう、PyNotify ならね。</h4>
 
-PyNotify は Python のプログラムから macOS のビープ音・通知センター、Slack、Discord、LINE にメッセージを簡単に送信できるライブラリです。
+PyNotify は Python のプログラムからビープ音・通知センター、Slack、Discord、LINE にメッセージを簡単に送信できるライブラリです。
 
 ## インストール
 このリポジトリを以下のコマンドでインストールします。動作環境は `Python >= 3.6` です。
@@ -30,8 +30,8 @@ pip install git+https://github.com/higurashi-takuto/pynotify.git@v0.1.2
 from pynotify import BeepNotification
 ```
 
-### macOS のビープ音
-お使いの Mac から音を出せます。
+### macOS、Linux のビープ音
+お使いの Mac、LinuxPC から音を出せます。
 
 ```python
 # 引数は音を鳴らす回数です。
