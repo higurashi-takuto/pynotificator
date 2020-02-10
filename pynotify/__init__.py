@@ -124,7 +124,7 @@ class TokenNotification(MessageNotification):
 class BeepNotification(OSSpecificNotification):
     '''
     BeepNotification:
-        (macOS 用)ビープ音による通知
+        ビープ音による通知
     引数:
         times(int): ビープ音の回数
     '''
@@ -158,7 +158,7 @@ class BeepNotification(OSSpecificNotification):
 class CenterNotification(MessageNotification):
     '''
     CenterNotification:
-        (macOS 用)通知センターによる通知
+        通知センターによる通知
     引数:
         message(str): 本文
         title(str): タイトル
