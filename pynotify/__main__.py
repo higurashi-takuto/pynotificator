@@ -1,9 +1,6 @@
 import argparse
-from .__init__ import (BeepNotification,
-                       CenterNotification,
-                       SlackNotification,
-                       DiscordNotification,
-                       LineNotification)
+
+import pynotify
 
 
 def beep_notify():
@@ -12,7 +9,7 @@ def beep_notify():
                         help='ビープ音を鳴らす回数')
     args = parser.parse_args()
 
-    bn = BeepNotification(args.times)
+    bn = pynotify.BeepNotification(args.times)
     bn.notify()
 
 
@@ -28,8 +25,8 @@ def center_notify():
                         help='通知音を無効化')
     args = parser.parse_args()
 
-    cn = CenterNotification(args.message,
-                            args.title, args.subtitle, not args.nosound)
+    cn = pynotify.CenterNotification(
+        args.message, args.title, args.subtitle, not args.nosound)
     cn.notify()
 
 
@@ -40,7 +37,7 @@ def slack_notify():
     parser.add_argument('url', help='Incoming Webhook の URL')
     args = parser.parse_args()
 
-    sn = SlackNotification(args.message, args.url)
+    sn = pynotify.SlackNotification(args.message, args.url)
     sn.notify()
 
 
@@ -51,7 +48,7 @@ def discord_notify():
     parser.add_argument('url', help='Discord の Webhook の URL')
     args = parser.parse_args()
 
-    dn = DiscordNotification(args.message, args.url)
+    dn = pynotify.DiscordNotification(args.message, args.url)
     dn.notify()
 
 
@@ -62,5 +59,5 @@ def line_notify():
     parser.add_argument('token', help='LINE Notify のトークン')
     args = parser.parse_args()
 
-    ln = LineNotification(args.message, args.token)
+    ln = pynotify.LineNotification(args.message, args.token)
     ln.notify()
