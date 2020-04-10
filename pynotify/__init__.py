@@ -51,7 +51,7 @@ class OSSpecificNotification(BaseNotification):
         elif self.system == 'Windows':
             self.windows_notify()
         else:
-            NotificationError(f'{self.system} is supported system')
+            NotificationError(f'{self.system} is not supported system')
 
 
 class MessageNotification(BaseNotification):
