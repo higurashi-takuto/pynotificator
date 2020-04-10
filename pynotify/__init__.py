@@ -1,4 +1,9 @@
+import json
+import platform
 import subprocess
+import time
+
+import requests
 
 
 class NotificationError(Exception):
@@ -27,7 +32,6 @@ class OSSpecificNotification(BaseNotification):
         OS ごとの通知
     '''
     def __init__(self):
-        import platform
         self.system = platform.system()
 
     # macOS 用の通知
@@ -148,7 +152,6 @@ class BeepNotification(OSSpecificNotification):
         subprocess.run(cmd)
 
     def linux_notify(self):
-        import time
         for _ in range(self._times):
             cmd = ['xkbbell']
             time.sleep(0.5)
@@ -233,8 +236,6 @@ class SlackNotification(WebhookNotification):
     '''
     # 通知の実行
     def notify(self):
-        import json
-        import requests
         data = {'text': self._message}
         requests.post(self._url, data=json.dumps(data))
 
@@ -249,8 +250,6 @@ class DiscordNotification(WebhookNotification):
     '''
     # 通知の実行
     def notify(self):
-        import json
-        import requests
         data = {'content': self._message}
         requests.post(
             self._url,
@@ -273,7 +272,6 @@ class LineNotification(TokenNotification):
 
     # 通知の実行
     def notify(self):
-        import requests
         headers = {'Authorization': f'Bearer {self._token}'}
         params = {'message': self._message}
         requests.post(
