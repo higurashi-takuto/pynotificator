@@ -64,7 +64,7 @@ $ line-notify [-h] [--message MESSAGE] token
 from pynotificator import BeepNotification
 ```
 
-#### macOS、Linux のビープ音
+#### macOS、Linux、Windows のビープ音
 お使いの Mac、LinuxPC から音を出せます。
 
 ```python
@@ -73,17 +73,13 @@ bn = BeepNotification(3)
 bn.notify()
 ```
 
-#### macOS 通知センター
-お使いの Mac に通知を送れます。
+#### macOS、Windows 通知センター
+お使いの Mac、Windows に通知を送れます。
 
 ```python
 cn = CenterNotification('本文', title='タイトル', subtitle='サブタイトル', sound=True)
 cn.notify()
 ```
-
-実行サンプル
-
-<img src="https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/assets/center-sample.png" alt="CenterNotification Sample" width="30%">
 
 #### Slack
 Slack の Incoming Webhook を利用し、メッセージを送信します。
