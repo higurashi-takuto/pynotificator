@@ -216,7 +216,7 @@ class BeepNotification(OSSpecificNotification):
             time.sleep(0.5)
 
 
-class CenterNotification(MessageNotification, OSSpecificNotification):
+class DesktopNotification(MessageNotification, OSSpecificNotification):
     '''デスクトップ通知を行うクラス
 
     Args:
@@ -228,15 +228,15 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
 
     Examples:
         通常使用
-            >>> cn = CenterNotification('本文', title='タイトル', subtitle='サブタイトル')
-            >>> cn.notify()
+            >>> dn = DesktopNotification('本文', title='タイトル', subtitle='サブタイトル')
+            >>> dn.notify()
 
         通知の変更
-            >>> cn.message = '内容変更'
-            >>> cn.notify()
+            >>> dn.message = '内容変更'
+            >>> dn.notify()
 
         コマンドラインツール
-            ``$ center-notify [-h] [--message MESSAGE]
+            ``$ desktop-notify [-h] [--message MESSAGE]
             [--title TITLE] [--subtitle SUBTITLE]
             [--nosound]``
     '''

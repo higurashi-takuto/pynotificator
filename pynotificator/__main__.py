@@ -13,8 +13,8 @@ def beep_notify():
     bn.notify()
 
 
-def center_notify():
-    parser = argparse.ArgumentParser(description='通知を飛ばす')
+def desktop_notify():
+    parser = argparse.ArgumentParser(description='デスクトップ通知を飛ばす')
     parser.add_argument('--message', '-m', default='PyNotificator',
                         help='通知の内容')
     parser.add_argument('--title', '-t', default='',
@@ -27,9 +27,9 @@ def center_notify():
                         help='通知音を無効化')
     args = parser.parse_args()
 
-    cn = pynotificator.CenterNotification(
+    dn = pynotificator.DesktopNotification(
         args.message, args.title, args.subtitle, args.icon, not args.nosound)
-    cn.notify()
+    dn.notify()
 
 
 def slack_notify():
