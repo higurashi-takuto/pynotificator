@@ -4,7 +4,7 @@ Quick Start
 Installation
 ------------
 
-Install with pip.::
+Install with pip. ::
 
     $ pip install pynotificator
 

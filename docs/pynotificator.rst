@@ -22,7 +22,7 @@ Subclass
 --------
 
 - `BeepNotification <#pynotificator.BeepNotification>`_
-- `CenterNotification <#pynotificator.CenterNotification>`_
+- `DesktopNotification <#pynotificator.DesktopNotification>`_
 - `SlackNotification <#pynotificator.SlackNotification>`_
 - `DiscordNotification <#pynotificator.DiscordNotification>`_
 - `LineNotification <#pynotificator.LineNotification>`_

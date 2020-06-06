@@ -11,7 +11,7 @@ extensions = ['sphinx.ext.napoleon', 'sphinx_rtd_theme']
 
 # templates_path = ['_templates']
 
-language = 'ja'
+language = 'en'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
