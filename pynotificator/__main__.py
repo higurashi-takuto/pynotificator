@@ -21,12 +21,14 @@ def center_notify():
                         help='通知のタイトル')
     parser.add_argument('--subtitle', '-s', default='',
                         help='通知のサブタイトル')
+    parser.add_argument('--icon', '-i', default='',
+                        help='アイコンの絶対パス')
     parser.add_argument('--nosound', action='store_true',
                         help='通知音を無効化')
     args = parser.parse_args()
 
     cn = pynotificator.CenterNotification(
-        args.message, args.title, args.subtitle, not args.nosound)
+        args.message, args.title, args.subtitle, args.icon, not args.nosound)
     cn.notify()
 
 

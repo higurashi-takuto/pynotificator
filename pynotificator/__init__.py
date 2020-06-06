@@ -172,9 +172,10 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
         message(str): 本文
         title(str): タイトル
         subtitle(str): サブタイトル
+        icon(str): アイコンの絶対パス
         sound(bool): 音の有無
     '''
-    def __init__(self, message, title=None, subtitle=None, sound=True):
+    def __init__(self, message, title=None, subtitle=None, icon=None, sound=True):
         MessageNotification.__init__(self, message)
         OSSpecificNotification.__init__(self)
         self._title = None
@@ -184,6 +185,8 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
             self.set_title(title)
         if subtitle:
             self.set_subtitle(subtitle)
+        if icon:
+            self.set_icon(icon)
         if sound:
             self.set_sound(sound)
 
@@ -205,6 +208,15 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
 
     subtitle = property(get_subtitle, set_subtitle)
 
+    # icon のプロパティ用
+    def get_icon(self):
+        return self._icon
+
+    def set_icon(self, icon):
+        self._icon = self.set_typed_variable(icon, str)
+
+    icon = property(get_icon, set_icon)
+
     # sound のプロパティ用
     def get_sound(self):
         return self._sound
@@ -217,14 +229,11 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
     # 通知の実行
     def darwin_notify(self):
         _message = f'display notification \"{self._message}\"'
-        if self._title and self._subtitle:
-            _title = f'with title \"{self._title}\" subtitle \"{self._subtitle}\"'
-        elif self._title:
-            _title = f'with title \"{self._title}\"'
-        elif self._subtitle:
-            _title = f'with title \"\" subtitle \"{self._subtitle}\"'
-        else:
-            _title = ''
+        _title = ''
+        if self._title:
+            _title += f'with title \"{self._title}\" '
+        if self._subtitle:
+            _title += f'subtitle \"{self._subtitle}\"'
         _sound = 'sound name \"\"' if self._sound else ''
         cmd = ['osascript', '-e', f'{_message} {_title} {_sound}']
         subprocess.run(cmd)
@@ -242,6 +251,7 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
             _title = None
         toaster.show_toast(_title,
                            self._message,
+                           icon_path=self._icon,
                            duration=5)
 
 
