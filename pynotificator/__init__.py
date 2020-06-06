@@ -158,7 +158,7 @@ class BeepNotification(OSSpecificNotification):
             subprocess.run(cmd)
 
 
-class CenterNotification(MessageNotification):
+class CenterNotification(MessageNotification, OSSpecificNotification):
     '''
     CenterNotification:
         通知センターによる通知
@@ -169,7 +169,8 @@ class CenterNotification(MessageNotification):
         sound(bool): 音の有無
     '''
     def __init__(self, message, title=None, subtitle=None, sound=True):
-        super().__init__(message)
+        MessageNotification.__init__(self, message)
+        OSSpecificNotification.__init__(self)
         self._title = None
         self._subtitle = None
         self._sound = None
@@ -216,7 +217,7 @@ class CenterNotification(MessageNotification):
     sound = property(get_sound, set_sound)
 
     # 通知の実行
-    def notify(self):
+    def darwin_notify(self):
         _message = f'display notification \"{self._message}\"'
         _title = \
             f'with title \"{self._title}\" subtitle \"{self._subtitle}\"' \

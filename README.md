@@ -106,9 +106,6 @@ ln = LineNotification('本文', 'xxx')
 ln.notify()
 ```
 
-## クラス図
-![クラス図](https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/assets/classes.png)
-
 ## ライセンス
 [MIT License](https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/LICENSE)
 
