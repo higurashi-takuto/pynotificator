@@ -18,7 +18,7 @@ PyNotificator は Python のプログラム / コマンドラインからビー�
 このリポジトリを以下のコマンドでインストールします。動作環境は `Python >= 3.6` です。
 
 ```shell
-pip install git+https://github.com/higurashi-takuto/pynotificator.git@v0.3.2
+pip install git+https://github.com/higurashi-takuto/pynotificator.git@v0.4.0
 ```
 
 ## 使い方
