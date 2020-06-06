@@ -5,24 +5,18 @@ import time
 
 import requests
 
+from ._version import __version__   # noqa: F401
+
 
 class NotificationError(Exception):
-    '''通知エラークラス
-
-    通知に関するエラーを示す。
-    '''
+    '''通知エラークラス'''
     pass
 
 
 class BaseNotification:
-    '''通知基底クラス
-
-    通知を行うクラスの基底クラスとなる。
-    '''
+    '''通知基底クラス'''
     def set_typed_variable(self, value, specified_type):
         '''型を確認して返す関数
-
-        指定された型であればそのまま返し、異なれば NotificationError を返す。
 
         Args:
             value (Object): 確認対象の値
@@ -54,8 +48,6 @@ class BaseNotification:
     def notify(self):
         '''通知を行う関数
 
-        実装は継承先のクラスで行う。
-
         Raises:
             NotImplementedError: 実装が行われていない場合に発生する
         '''
@@ -65,16 +57,10 @@ class BaseNotification:
 class OSSpecificNotification(BaseNotification):
     '''OS ごとの通知を行うクラス
 
-    darwin(macOS) と Linux と Window をサポートしている。
-
     Attributes:
         system (str): 使用中の OS
     '''
     def __init__(self):
-        '''コンストラクタ
-
-        OS の判定を行う。
-        '''
         self.system = platform.system()
 
     def darwin_notify(self):
@@ -120,19 +106,10 @@ class OSSpecificNotification(BaseNotification):
 class MessageNotification(BaseNotification):
     '''メッセージを伴う通知を行うクラス
 
-    デスクトップ通知や SNS など、メッセージを打ち込める場合に使用する。
-
-    Attributes:
+    Args:
         message (str): メッセージ本文
     '''
     def __init__(self, message):
-        '''コンストラクタ
-
-        メッセージの設定を行う。
-
-        Args:
-            message (str): メッセージ本文
-        '''
         self._message = None
         self.set_message(message)
 
@@ -143,23 +120,17 @@ class MessageNotification(BaseNotification):
         self._message = self.set_typed_variable(message, str)
 
     message = property(get_message, set_message)
+    '''str: メッセージ本文'''
 
 
 class WebhookNotification(MessageNotification):
     '''Webhook による通知を行うクラス
 
-    主に SNS 向けに Webhook を用いた通知を行う場合に使用する。
-
-    Attributes:
+    Args:
+        message (str): メッセージ本文
         url (str): Webhook の URL
     '''
     def __init__(self, message, url):
-        '''コンストラクタ
-
-        Args:
-            message (str): メッセージ本文
-            url (str): Webhook の URL
-        '''
         super().__init__(message)
         self._url = None
         self.set_url(url)
@@ -171,23 +142,17 @@ class WebhookNotification(MessageNotification):
         self._url = self.set_typed_variable(url, str)
 
     url = property(get_url, set_url)
+    '''str: Webhook の URL'''
 
 
 class TokenNotification(MessageNotification):
     '''トークンによる通知を行うクラス
 
-    トークン認証の API を用いた通知を行う場合に使用する。
-
-    Attributes:
+    Args:
+        message (str): メッセージ本文
         token (str): トークン
     '''
     def __init__(self, message, token):
-        '''コンストラクタ
-
-        Args:
-            message (str): メッセージ本文
-            token (str): トークン
-        '''
         super().__init__(message)
         self._token = None
         self.set_token(token)
@@ -199,34 +164,28 @@ class TokenNotification(MessageNotification):
         self._token = self.set_typed_variable(token, str)
 
     token = property(get_token, set_token)
+    '''str: トークン'''
 
 
 class BeepNotification(OSSpecificNotification):
     '''ビープ音による通知を行うクラス
 
-    OS 標準のビープを用いた通知を行う場合に使用する。
-
-    Attributes:
+    Args:
         times (int): 通知回数
 
     Examples:
         通常使用
-        >>> bn = BeepNotification(3)
-        >>> bn.notify()
+            >>> bn = BeepNotification(3)
+            >>> bn.notify()
 
         通知回数の変更
-        >>> bn.times = 1
-        >>> bn.notify()
+            >>> bn.times = 1
+            >>> bn.notify()
 
         コマンドラインツール
-        $ beep-notify [-h] [--times TIMES]
+            ``$ beep-notify [-h] [--times TIMES]``
     '''
     def __init__(self, times):
-        '''コンストラクタ
-
-        Args:
-            times (int): 通知回数
-        '''
         super().__init__()
         self._times = None
         self.set_times(times)
@@ -238,6 +197,7 @@ class BeepNotification(OSSpecificNotification):
         self._times = self.set_typed_variable(times, int)
 
     times = property(get_times, set_times)
+    '''int: 通知回数'''
 
     def darwin_notify(self):
         cmd = ['osascript', '-e', f'beep {self._times}']
@@ -259,38 +219,29 @@ class BeepNotification(OSSpecificNotification):
 class CenterNotification(MessageNotification, OSSpecificNotification):
     '''デスクトップ通知を行うクラス
 
-    macOS の通知センタ、 Linux のポップアップ通知、 Windows のトースト通知を行う。
-
-    Attributes:
-        title (str): タイトル
-        subtitle (str): サブタイトル
-        icon (str): アイコン
-        sound (bool): 音の有無
+    Args:
+        message(str): 本文
+        title(str): タイトル
+        subtitle(str): サブタイトル
+        icon(str): アイコン
+        sound(bool): 音の有無
 
     Examples:
         通常使用
-        >>> cn = CenterNotification('本文', title='タイトル', subtitle='サブタイトル')
-        >>> cn.notify()
+            >>> cn = CenterNotification('本文', title='タイトル', subtitle='サブタイトル')
+            >>> cn.notify()
 
         通知の変更
-        >>> cn.message = '内容変更'
-        >>> cn.notify()
+            >>> cn.message = '内容変更'
+            >>> cn.notify()
 
         コマンドラインツール
-        $ center-notify [-h] [--message MESSAGE] [--title TITLE]
-                        [--subtitle SUBTITLE] [--nosound]
+            ``$ center-notify [-h] [--message MESSAGE]
+            [--title TITLE] [--subtitle SUBTITLE]
+            [--nosound]``
     '''
     def __init__(self, message, title=None, subtitle=None,
                  icon=None, sound=True):
-        '''コンストラクタ
-
-        Args:
-            message(str): 本文
-            title(str): タイトル
-            subtitle(str): サブタイトル
-            icon(str): アイコン
-            sound(bool): 音の有無
-        '''
         MessageNotification.__init__(self, message)
         OSSpecificNotification.__init__(self)
         self._title = None
@@ -312,15 +263,11 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
     def set_title(self, title):
         self._title = self.set_typed_variable(title, str)
 
-    title = property(get_title, set_title)
-
     def get_subtitle(self):
         return self._subtitle
 
     def set_subtitle(self, subtitle):
         self._subtitle = self.set_typed_variable(subtitle, str)
-
-    subtitle = property(get_subtitle, set_subtitle)
 
     def get_icon(self):
         return self._icon
@@ -328,15 +275,23 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
     def set_icon(self, icon):
         self._icon = self.set_typed_variable(icon, str)
 
-    icon = property(get_icon, set_icon)
-
     def get_sound(self):
         return self._sound
 
     def set_sound(self, sound):
         self._sound = self.set_typed_variable(sound, bool)
 
+    title = property(get_title, set_title)
+    '''str: タイトル'''
+
+    subtitle = property(get_subtitle, set_subtitle)
+    '''str: サブタイトル'''
+
+    icon = property(get_icon, set_icon)
+    '''str: アイコン'''
+
     sound = property(get_sound, set_sound)
+    '''bool: 音の有無'''
 
     def darwin_notify(self):
         _message = f'display notification \"{self._message}\"'
@@ -383,25 +338,21 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
 class SlackNotification(WebhookNotification):
     '''Slack による通知を行うクラス
 
-    Slack API を用いて通知を行う。
-
     Examples:
         通常使用
-        >>> sn = SlackNotification('本文', 'https://hooks.slack.com/xxx')
-        >>> sn.notify()
+            >>> sn = SlackNotification('本文', 'https://hooks.slack.com/xxx')
+            >>> sn.notify()
 
         通知の変更
-        >>> sn.message = '本文変更'
-        >>> sn.notify()
+            >>> sn.message = '本文変更'
+            >>> sn.notify()
 
         コマンドラインツール
-        $ slack-notify [-h] [--message MESSAGE] url
+            ``$ slack-notify [-h] [--message MESSAGE] url``
     '''
 
     def notify(self):
-        '''通知を行う関数
-
-        '''
+        '''通知を行う関数'''
         data = {'text': self._message}
         requests.post(self._url, data=json.dumps(data))
 
@@ -409,25 +360,21 @@ class SlackNotification(WebhookNotification):
 class DiscordNotification(WebhookNotification):
     '''Discord による通知を行うクラス
 
-    Discord Webhook を用いて通知を行う。
-
     Examples:
         通常使用
-        >>> dn = DiscordNotification('本文', 'https://discordapp.com/xxx')
-        >>> dn.notify()
+            >>> dn = DiscordNotification('本文', 'https://discordapp.com/xxx')
+            >>> dn.notify()
 
         通知の変更
-        >>> dn.message = '本文変更'
-        >>> dn.notify()
+            >>> dn.message = '本文変更'
+            >>> dn.notify()
 
         コマンドラインツール
-        $ discord-notify [-h] [--message MESSAGE] url
+            ``$ discord-notify [-h] [--message MESSAGE] url``
     '''
 
     def notify(self):
-        '''通知を行う関数
-
-        '''
+        '''通知を行う関数'''
         data = {'content': self._message}
         requests.post(
             self._url,
@@ -439,35 +386,29 @@ class DiscordNotification(WebhookNotification):
 class LineNotification(TokenNotification):
     '''LINE による通知を行うクラス
 
-    LINE Notify を用いて通知を行う。
+    Args:
+        message(str): メッセージ本文
+        token(str): トークン
 
     Examples:
         通常使用
-        >>> dn = DiscordNotification('本文', 'https://discordapp.com/xxx')
-        >>> dn.notify()
+            >>> dn = DiscordNotification('本文', 'https://discordapp.com/xxx')
+            >>> dn.notify()
 
         通知の変更
-        >>> dn.message = '本文変更'
-        >>> dn.notify()
+            >>> dn.message = '本文変更'
+            >>> dn.notify()
 
         コマンドラインツール
-        $ discord-notify [-h] [--message MESSAGE] url
+            ``$ discord-notify [-h] [--message MESSAGE] url``
     '''
 
     def __init__(self, message, token):
-        '''コンストラクタ
-
-        Args:
-            message(str): メッセージ本文
-            token(str): トークン
-        '''
         super().__init__(message, token)
         self.URL = 'https://notify-api.line.me/api/notify'
 
     def notify(self):
-        '''通知を行う関数
-
-        '''
+        '''通知を行う関数'''
         headers = {'Authorization': f'Bearer {self._token}'}
         params = {'message': self._message}
         requests.post(
