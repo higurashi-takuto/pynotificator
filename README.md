@@ -1,5 +1,7 @@
 # PyNotificator
 
+HomePage(coming soon) / [Documentation](https://pynotificator.readthedocs.io/en/latest/) / [PyPI](https://pypi.org/project/pynotificator/)
+
 ## Quick Start
 
 ### Installation
