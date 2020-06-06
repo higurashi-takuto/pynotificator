@@ -193,10 +193,6 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
 
     def set_title(self, title):
         self._title = self.set_typed_variable(title, str)
-        # タイトルとサブタイトルの両方がないといけないため、
-        # 片方だけ設定された場合、もう一方を空白にする
-        if not self._subtitle:
-            self._subtitle = ' '
 
     title = property(get_title, set_title)
 
@@ -206,10 +202,6 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
 
     def set_subtitle(self, subtitle):
         self._subtitle = self.set_typed_variable(subtitle, str)
-        # タイトルとサブタイトルの両方がないといけないため、
-        # 片方だけ設定された場合、もう一方を空白にする
-        if not self._title:
-            self._title = ' '
 
     subtitle = property(get_subtitle, set_subtitle)
 
@@ -225,9 +217,14 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
     # 通知の実行
     def darwin_notify(self):
         _message = f'display notification \"{self._message}\"'
-        _title = \
-            f'with title \"{self._title}\" subtitle \"{self._subtitle}\"' \
-            if self._title and self._subtitle else ''
+        if self._title and self._subtitle:
+            _title = f'with title \"{self._title}\" subtitle \"{self._subtitle}\"'
+        elif self._title:
+            _title = f'with title \"{self._title}\"'
+        elif self._subtitle:
+            _title = f'with title \"\" subtitle \"{self._subtitle}\"'
+        else:
+            _title = ''
         _sound = 'sound name \"\"' if self._sound else ''
         cmd = ['osascript', '-e', f'{_message} {_title} {_sound}']
         subprocess.run(cmd)
@@ -235,7 +232,14 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
     def windows_notify(self):
         from win10toast import ToastNotifier
         toaster = ToastNotifier()
-        _title = f'{self._title} - {self._subtitle}'
+        if self._title and self._subtitle:
+            _title = f'{self._title} - {self._subtitle}'
+        elif self._title:
+            _title = self._title
+        elif self._subtitle:
+            _title = self._subtitle
+        else:
+            _title = None
         toaster.show_toast(_title,
                            self._message,
                            duration=5)
