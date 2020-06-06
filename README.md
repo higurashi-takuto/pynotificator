@@ -1,4 +1,4 @@
-<div align="center"><img src="assets/logo.svg" alt="PyNotify logo" width="30%"></div>
+<div align="center"><img src="assets/logo.svg" alt="PyNotificator logo" width="30%"></div>
 <h4 style="text-align: center;">Python / コマンドラインから様々な通知を簡単に送るためのライブラリ</h4>
 
 ## 概要
@@ -10,15 +10,15 @@
 
 と思ったことはありませんか？
 
-<h4>それ、できます。<br>そう、PyNotify ならね。</h4>
+<h4>それ、できます。<br>そう、PyNotificator ならね。</h4>
 
-PyNotify は Python のプログラム / コマンドラインからビープ音・通知センター、Slack、Discord、LINE にメッセージを簡単に送信できるライブラリです。
+PyNotificator は Python のプログラム / コマンドラインからビープ音・通知センター、Slack、Discord、LINE にメッセージを簡単に送信できるライブラリです。
 
 ## インストール
 このリポジトリを以下のコマンドでインストールします。動作環境は `Python >= 3.6` です。
 
 ```shell
-pip install git+https://github.com/higurashi-takuto/pynotify.git@v0.3.1
+pip install git+https://github.com/higurashi-takuto/pynotificator.git@v0.3.2
 ```
 
 ## 使い方
@@ -55,7 +55,7 @@ $ line-notify [-h] [--message MESSAGE] token
 
 ```python
 # ビープ音を使用したい場合
-from pynotify import BeepNotification
+from pynotificator import BeepNotification
 ```
 
 #### macOS、Linux のビープ音
