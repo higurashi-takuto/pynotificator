@@ -157,6 +157,12 @@ class BeepNotification(OSSpecificNotification):
             time.sleep(0.5)
             subprocess.run(cmd)
 
+    def windows_notify(self):
+        for _ in range(self._times):
+            cmd = ['rundll32', 'user32.dll,MessageBeep']
+            subprocess.run(cmd)
+            time.sleep(0.5)
+
 
 class CenterNotification(MessageNotification, OSSpecificNotification):
     '''
@@ -225,6 +231,14 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
         _sound = 'sound name \"\"' if self._sound else ''
         cmd = ['osascript', '-e', f'{_message} {_title} {_sound}']
         subprocess.run(cmd)
+
+    def windows_notify(self):
+        from win10toast import ToastNotifier
+        toaster = ToastNotifier()
+        _title = f'{self._title} - {self._subtitle}'
+        toaster.show_toast(_title,
+                           self._message,
+                           duration=5)
 
 
 class SlackNotification(WebhookNotification):
