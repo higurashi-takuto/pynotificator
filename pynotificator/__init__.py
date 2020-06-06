@@ -154,8 +154,8 @@ class BeepNotification(OSSpecificNotification):
     def linux_notify(self):
         for _ in range(self._times):
             cmd = ['xkbbell']
-            time.sleep(0.5)
             subprocess.run(cmd)
+            time.sleep(0.5)
 
     def windows_notify(self):
         for _ in range(self._times):
