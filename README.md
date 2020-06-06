@@ -21,6 +21,12 @@ PyNotificator は Python のプログラム / コマンドラインからビー�
 pip install pynotificator
 ```
 
+Windows の通知を利用する場合は `win` のオプションをつける必要があります。
+
+```shell
+pip install pynotificator[win]
+```
+
 ## 使い方
 ### コマンドラインツール
 #### ビープ音
