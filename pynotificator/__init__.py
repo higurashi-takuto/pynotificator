@@ -172,7 +172,7 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
         message(str): 本文
         title(str): タイトル
         subtitle(str): サブタイトル
-        icon(str): アイコンの絶対パス
+        icon(str): アイコン
         sound(bool): 音の有無
     '''
     def __init__(self, message, title=None, subtitle=None, icon=None, sound=True):
@@ -180,6 +180,7 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
         OSSpecificNotification.__init__(self)
         self._title = None
         self._subtitle = None
+        self._icon = None
         self._sound = None
         if title:
             self.set_title(title)
@@ -236,6 +237,20 @@ class CenterNotification(MessageNotification, OSSpecificNotification):
             _title += f'subtitle \"{self._subtitle}\"'
         _sound = 'sound name \"\"' if self._sound else ''
         cmd = ['osascript', '-e', f'{_message} {_title} {_sound}']
+        subprocess.run(cmd)
+
+    def linux_notify(self):
+        if self._title and self._subtitle:
+            _title = f'{self._title} - {self._subtitle}'
+        elif self._title:
+            _title = self._title
+        elif self._subtitle:
+            _title = self._subtitle
+        else:
+            _title = ' '
+        cmd = ['notify-send', _title, self._message]
+        if self._icon:
+            cmd.extend(['-i', self._icon])
         subprocess.run(cmd)
 
     def windows_notify(self):

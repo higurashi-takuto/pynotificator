@@ -22,7 +22,7 @@ def center_notify():
     parser.add_argument('--subtitle', '-s', default='',
                         help='通知のサブタイトル')
     parser.add_argument('--icon', '-i', default='',
-                        help='アイコンの絶対パス')
+                        help='アイコン')
     parser.add_argument('--nosound', action='store_true',
                         help='通知音を無効化')
     args = parser.parse_args()
