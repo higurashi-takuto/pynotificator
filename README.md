@@ -1,4 +1,4 @@
-<div align="center"><img src="assets/logo.svg" alt="PyNotificator logo" width="30%"></div>
+<div align="center"><img src="https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/assets/logo.svg" alt="PyNotificator logo" width="30%"></div>
 <h4 style="text-align: center;">Python / コマンドラインから様々な通知を簡単に送るためのライブラリ</h4>
 
 ## 概要
@@ -18,7 +18,7 @@ PyNotificator は Python のプログラム / コマンドラインからビー�
 このリポジトリを以下のコマンドでインストールします。動作環境は `Python >= 3.6` です。
 
 ```shell
-pip install git+https://github.com/higurashi-takuto/pynotificator.git@v0.4.0
+pip install pynotificator
 ```
 
 ## 使い方
@@ -77,7 +77,7 @@ cn.notify()
 
 実行サンプル
 
-<img src="assets/center-sample.png" alt="CenterNotification Sample" width="30%">
+<img src="https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/assets/center-sample.png" alt="CenterNotification Sample" width="30%">
 
 #### Slack
 Slack の Incoming Webhook を利用し、メッセージを送信します。
@@ -107,10 +107,10 @@ ln.notify()
 ```
 
 ## クラス図
-![クラス図](assets/classes.png)
+![クラス図](https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/assets/classes.png)
 
 ## ライセンス
-[MIT License](LICENSE)
+[MIT License](https://raw.githubusercontent.com/higurashi-takuto/pynotificator/master/LICENSE)
 
 ## 作成者
 [higurashi-takuto](https://hgrs.me/)
