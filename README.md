@@ -1,6 +1,6 @@
 # PyNotificator
 
-HomePage(coming soon) / [Documentation](https://pynotificator.readthedocs.io/en/latest/) / [PyPI](https://pypi.org/project/pynotificator/)
+[HomePage](https://higurashi-takuto.github.io/pynotificator/) / [Documentation](https://pynotificator.readthedocs.io/en/latest/) / [PyPI](https://pypi.org/project/pynotificator/)
 
 ## Quick Start
 
